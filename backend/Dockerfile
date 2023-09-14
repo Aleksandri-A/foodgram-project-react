@@ -9,3 +9,9 @@ RUN pip install -r requirements.txt --no-cache-dir
 COPY . .
 
 CMD ["gunicorn", "--bind", "0.0.0.0:8070", "backend.wsgi"]
+
+COPY run.sh .
+
+RUN chmod +x run.sh
+
+ENTRYPOINT ["/app/run.sh"]

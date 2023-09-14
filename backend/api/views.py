@@ -26,7 +26,7 @@ from .serializers import (IngredientSerializer,
                           )
 from .permissions import IsAuthorOrAdminOrReadOnly
 
-from .filters import IngredientFilter
+from .filters import IngredientFilter, RecipeFilter
 
 
 class CustomUserViewSet(UserViewSet):
@@ -112,6 +112,7 @@ class RecipeViewSet(viewsets.ModelViewSet):
     permission_classes = (IsAuthorOrAdminOrReadOnly,)
     filter_backends = (DjangoFilterBackend,)
     filterset_fields = ('tags__slug',)
+    filterset_class = RecipeFilter
 
 
     def perform_create(self, serializer):
