@@ -24,19 +24,23 @@ class RecipeAdmin(admin.ModelAdmin):
 class IngredientAdmin(ImportExportMixin, admin.ModelAdmin):
     list_display = ('name', 'measurement_unit')
     list_filter = ('name',)
-        
+
 
 class UserAdmin(admin.ModelAdmin):
-    list_display = ('id', 'username', 'email', 'first_name', 'last_name', 'password')
+    list_display = (
+        'id',
+        'username',
+        'email',
+        'first_name',
+        'last_name',
+        'password'
+    )
     list_filter = ('username', 'email')
 
 
 class FavoriteRecipeAdmin(admin.ModelAdmin):
     list_display = ('id', 'recipe', 'user')
 
-
-class FavoriteRecipeAdmin(admin.ModelAdmin):
-    list_display = ('id', 'recipe', 'user')
 
 admin.site.register(Recipe, RecipeAdmin)
 admin.site.register(Ingredient, IngredientAdmin)

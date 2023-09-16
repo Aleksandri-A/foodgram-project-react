@@ -38,7 +38,7 @@ class User(AbstractUser):
     USERNAME_FIELD = 'email'
     REQUIRED_FIELDS = ['username', 'first_name', 'last_name', 'password']
 
-    def str(self):
+    def __str__(self):
         return self.username
 
 
@@ -65,3 +65,6 @@ class Subscribe(models.Model):
                 name='unique_name_subscribing'
             )
         ]
+
+    def __str__(self):
+        return f'{self.subscriber} подписан на {self.subscribing}'

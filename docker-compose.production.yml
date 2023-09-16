@@ -13,7 +13,7 @@ services:
       - pg_data:/var/lib/postgresql/data
       
   backend:
-    build: ./backend/
+    image: aleksandri/foodgram_backend
     env_file: .env
     volumes:
       - static:/app/static
@@ -22,13 +22,13 @@ services:
       - db
 
   frontend: 
-    build: ./frontend/ 
+    image: aleksandri/foodgram_frontend
     command: cp -r /app/build/. /app/static/ 
     volumes: 
       - static:/app/static/ 
  
   nginx: 
-    build: ./nginx/ 
+    image: aleksandri/foodgram_nginx
     ports: 
       - 8070:80 
     volumes: 

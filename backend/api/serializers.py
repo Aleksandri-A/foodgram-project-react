@@ -34,7 +34,7 @@ class SignupSerializer(UserCreateSerializer):
     )
     password = serializers.CharField(
         write_only=True
-    )  
+    )
 
     class Meta:
         model = User
@@ -54,7 +54,8 @@ class SignupSerializer(UserCreateSerializer):
             )
         if User.objects.filter(username=data.get('username')):
             raise serializers.ValidationError(
-                'Пользователь с таким username уже существует. Придумайте другой username.'
+                'Пользователь с таким username уже существует. '
+                'Придумайте другой username.'
             )
         if User.objects.filter(email=data.get('email')):
             raise serializers.ValidationError(
@@ -65,9 +66,9 @@ class SignupSerializer(UserCreateSerializer):
 
 class CustomUserSerializer(UserSerializer):
     """Сериализатор для модели юзера."""
-    
+
     is_subscribed = serializers.SerializerMethodField()
-    
+
     class Meta:
         model = User
         fields = (
@@ -78,9 +79,8 @@ class CustomUserSerializer(UserSerializer):
             'last_name',
             'is_subscribed'
         )
-        
+
     def get_is_subscribed(self, obj):
-        """Возвращает True если пользователь подписан на автора."""
         current_user = self.context.get('request').user
         if current_user.is_anonymous:
             return False
@@ -93,31 +93,10 @@ class Base64ImageField(serializers.ImageField):
 
     def to_internal_value(self, data):
         if isinstance(data, str) and data.startswith('data:image'):
-            format, imgstr = data.split(';base64,')  
-            ext = format.split('/')[-1]  
+            format, imgstr = data.split(';base64,')
+            ext = format.split('/')[-1]
             data = ContentFile(base64.b64decode(imgstr), name='temp.' + ext)
         return super().to_internal_value(data)
-    
-
-# class SubscriptionSerializer(serializers.ModelSerializer):
-        
-#     def validate(self, data):
-#         if data['subscribing'] == self.context['request'].user:
-#             raise serializers.ValidationError('Нельзя подписаться на себя')
-#         return data
-
-#     class Meta:
-#         model = Subscribe
-#         fields = (
-#             'subscriber',
-#             'subscribing'
-#         )
-#         validators = [
-#             UniqueTogetherValidator(
-#                 queryset=Subscribe.objects.all(),
-#                 fields=('subscriber', 'subscribing')
-#             )
-#         ]
 
 
 class SubscriptionSerializer(CustomUserSerializer):
@@ -128,7 +107,7 @@ class SubscriptionSerializer(CustomUserSerializer):
         source='recipes.count',
         read_only=True
     )
-    
+
     def get_recipes_count(self, obj):
         return obj.recipes.count()
 
@@ -140,7 +119,7 @@ class SubscriptionSerializer(CustomUserSerializer):
             recipes = recipes[:int(limit)]
         serializer = RecipeShortSerializer(recipes, many=True, read_only=True)
         return serializer.data
-        
+
     class Meta:
         fields = (
             'email',
@@ -154,8 +133,6 @@ class SubscriptionSerializer(CustomUserSerializer):
         )
         model = User
         read_only_fields = ('email', 'username', 'first_name', 'last_name')
-
-
 
 
 class RecipeShortSerializer(serializers.ModelSerializer):
@@ -230,8 +207,10 @@ class IngredientInRecipeWriteSerializer(serializers.ModelSerializer):
 
 class RecipeWriteSerializer(serializers.ModelSerializer):
     """Сериализатор для модели рецептов(для создания рецепта)."""
-    tags = serializers.PrimaryKeyRelatedField(queryset=Tag.objects.all(),
-                                  many=True)
+    tags = serializers.PrimaryKeyRelatedField(
+        queryset=Tag.objects.all(),
+        many=True
+    )
     ingredients = IngredientInRecipeWriteSerializer(many=True)
     image = Base64ImageField()
     author = CustomUserSerializer(read_only=True)
@@ -259,14 +238,16 @@ class RecipeWriteSerializer(serializers.ModelSerializer):
         for ingredient_data in ingredients_data:
             ingredient_list.append(
                 IngredientInRecipe(
-                    recipe = recipe,
-                    ingredient = Ingredient.objects.get(id=ingredient_data['id']),
-                    amount = ingredient_data['amount']
+                    recipe=recipe,
+                    ingredient=Ingredient.objects.get(
+                        id=ingredient_data['id']
+                    ),
+                    amount=ingredient_data['amount']
                 )
             )
         IngredientInRecipe.objects.bulk_create(ingredient_list)
         return recipe
-    
+
     def update(self, instance, validated_data):
         instance.image = validated_data.get('image', instance.image)
         instance.name = validated_data.get('name', instance.name)
@@ -278,30 +259,33 @@ class RecipeWriteSerializer(serializers.ModelSerializer):
         instance.tags.clear()
         tags = validated_data.pop('tags')
         instance.tags.add(*tags)
-
-
         instance.ingredients.clear()
         ingredients_data = validated_data.pop('ingredients')
         ingredient_list = []
         for ingredient_data in ingredients_data:
             ingredient_list.append(
                 IngredientInRecipe(
-                    recipe = instance,
-                    ingredient = Ingredient.objects.get(id=ingredient_data['id']),
-                    amount = ingredient_data['amount']
+                    recipe=instance,
+                    ingredient=Ingredient.objects.get(
+                        id=ingredient_data['id']
+                    ),
+                    amount=ingredient_data['amount']
                 )
             )
         IngredientInRecipe.objects.bulk_create(ingredient_list)
         instance.save()
-        return instance 
-    
+        return instance
+
     def to_representation(self, recipe):
-        serializer = RecipeReadSerializer(recipe, context = self.context)
+        serializer = RecipeReadSerializer(
+            recipe, context=self.context
+        )
         return serializer.data
+
 
 class RecipeReadSerializer(serializers.ModelSerializer):
     """Сериализатор для модели рецептов(для чтения рецепта)."""
-    
+
     tags = TagSerializer(many=True, read_only=True)
     author = CustomUserSerializer(read_only=True)
     ingredients = IngredientInRecipeSerializer(

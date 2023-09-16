@@ -14,7 +14,7 @@ class IngredientFilter(filters.FilterSet):
 
 
 class RecipeFilter(filters.FilterSet):
-    """Фильтр поиска рецепта по тегу."""
+    """Фильтр поиска рецепта по тегу, избранному и списку покупок."""
 
     tags = filters.ModelMultipleChoiceFilter(
         queryset=Tag.objects.all(),
@@ -26,7 +26,7 @@ class RecipeFilter(filters.FilterSet):
         field_name='is_favorited', method='get_is_favorited')
     is_in_shopping_cart = filters.BooleanFilter(
         field_name='is_in_shopping_cart', method='get_is_in_shopping_cart')
-    
+
     class Meta:
         model = Recipe
         fields = ('tags', 'author', 'is_favorited', 'is_in_shopping_cart')
@@ -40,4 +40,3 @@ class RecipeFilter(filters.FilterSet):
         if value:
             return queryset.filter(shopping_cart__user=self.request.user)
         return queryset
-    

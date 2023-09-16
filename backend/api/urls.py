@@ -1,4 +1,3 @@
-from rest_framework.authtoken import views
 from rest_framework.routers import DefaultRouter
 
 from django.urls import include, path
@@ -19,4 +18,3 @@ urlpatterns = [
     path('', include('djoser.urls')),
     path('auth/', include('djoser.urls.authtoken')),
 ]
-

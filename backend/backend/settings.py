@@ -1,4 +1,3 @@
-from datetime import timedelta
 from pathlib import Path
 import os
 from dotenv import load_dotenv
@@ -12,12 +11,12 @@ load_dotenv()
 # See https://docs.djangoproject.com/en/2.2/howto/deployment/checklist/
 
 # SECURITY WARNING: keep the secret key used in production secret!
-SECRET_KEY = '!i5%+75ro&bf-l6dp0*qao$d5arzmqu#f-uusl4$gjb!=w1&wu'
+SECRET_KEY = os.getenv('SECRET_KEY', 'secret')
 
 # SECURITY WARNING: don't run with debug turned on in production!
-DEBUG = True
+DEBUG = False
 
-ALLOWED_HOSTS = ['*']
+ALLOWED_HOSTS = os.getenv('ALLOWED_HOSTS', '127.0.0.1 localhost').split(' ')
 
 LOGGING = {
     'version': 1,

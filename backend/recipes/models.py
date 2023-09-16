@@ -27,7 +27,7 @@ class Tag(models.Model):
                 message='Уникальный тег содержит недопустимый символ'
             )
         ]
-    )  
+    )
 
     class Meta:
         verbose_name = 'Тег'
@@ -99,7 +99,7 @@ class Recipe(models.Model):
         on_delete=models.CASCADE,
         related_name='recipes',
         verbose_name='Автор рецепта',
-    )  
+    )
     pub_date = models.DateTimeField(
         verbose_name='Дата публикации',
         auto_now_add=True,
@@ -136,7 +136,7 @@ class IngredientInRecipe(models.Model):
 
     def __str__(self):
         return f'{self.recipe} {self.ingredient}'
-    
+
 
 class ShoppingCart(models.Model):
     """Модель для списка покупок."""
@@ -192,4 +192,3 @@ class FavoriteRecipe(models.Model):
 
     def __str__(self):
         return f'{self.user} {self.recipe}'
-      
