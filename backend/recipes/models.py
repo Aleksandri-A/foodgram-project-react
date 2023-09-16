@@ -1,7 +1,7 @@
-from django.db import models
-from django.core.validators import RegexValidator, MinValueValidator
-
 from users.models import User
+
+from django.core.validators import MinValueValidator, RegexValidator
+from django.db import models
 
 
 class Tag(models.Model):
@@ -67,7 +67,7 @@ class Recipe(models.Model):
         related_name='recipes',
         verbose_name='Ингридиенты',
         through='IngredientInRecipe'
-        )
+    )
     tags = models.ManyToManyField(
         Tag,
         related_name='recipes',
@@ -81,7 +81,7 @@ class Recipe(models.Model):
         max_length=200,
         verbose_name='Название рецепта',
         db_index=True
-        )
+    )
     text = models.TextField(
         verbose_name='Описание'
     )
@@ -129,7 +129,7 @@ class IngredientInRecipe(models.Model):
         on_delete=models.CASCADE,
         related_name='ingredients_amount',
         verbose_name='Ингридиент'
-        )
+    )
     amount = models.PositiveSmallIntegerField(
         verbose_name='Количество'
     )
@@ -145,12 +145,12 @@ class ShoppingCart(models.Model):
         User,
         on_delete=models.CASCADE,
         related_name='shopping_cart'
-        )
+    )
     recipe = models.ForeignKey(
         Recipe,
         on_delete=models.CASCADE,
         related_name='shopping_cart'
-        )
+    )
 
     class Meta:
         verbose_name = 'Список покупок'
@@ -173,12 +173,12 @@ class FavoriteRecipe(models.Model):
         User,
         on_delete=models.CASCADE,
         related_name='favorite'
-        )
+    )
     recipe = models.ForeignKey(
         Recipe,
         on_delete=models.CASCADE,
         related_name='favorite'
-        )
+    )
 
     class Meta:
         verbose_name = 'Избранный рецепт'

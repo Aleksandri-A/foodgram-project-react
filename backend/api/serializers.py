@@ -1,16 +1,11 @@
-from rest_framework import serializers
-from djoser.serializers import UserCreateSerializer, UserSerializer
-from django.core.files.base import ContentFile
-
 import base64
+from djoser.serializers import UserCreateSerializer, UserSerializer
+from recipes.models import (FavoriteRecipe, Ingredient, IngredientInRecipe,
+                            Recipe, ShoppingCart, Tag)
+from rest_framework import serializers
+from users.models import Subscribe, User
 
-from recipes.models import (Recipe, Ingredient,
-                            Tag, IngredientInRecipe,
-                            FavoriteRecipe, ShoppingCart,
-                            )
-
-
-from users.models import User, Subscribe
+from django.core.files.base import ContentFile
 
 
 class SignupSerializer(UserCreateSerializer):
@@ -169,7 +164,7 @@ class IngredientSerializer(serializers.ModelSerializer):
             'id',
             'name',
             'measurement_unit'
-            )
+        )
         model = Ingredient
 
 
@@ -188,7 +183,7 @@ class IngredientInRecipeSerializer(serializers.ModelSerializer):
             'name',
             'measurement_unit',
             'amount'
-            )
+        )
         model = IngredientInRecipe
 
 
@@ -201,7 +196,7 @@ class IngredientInRecipeWriteSerializer(serializers.ModelSerializer):
         fields = (
             'id',
             'amount'
-            )
+        )
         model = IngredientInRecipe
 
 

@@ -1,6 +1,6 @@
-from pathlib import Path
 import os
 from dotenv import load_dotenv
+from pathlib import Path
 
 # Build paths inside the project like this: os.path.join(BASE_DIR, ...)
 BASE_DIR = Path(__file__).resolve().parent.parent
@@ -18,7 +18,7 @@ DEBUG = False
 
 ALLOWED_HOSTS = os.getenv('ALLOWED_HOSTS', '127.0.0.1 localhost').split(' ')
 
-CSRF_TRUSTED_ORIGINS = os.getenv('CSRF_TRUSTED_ORIGINS').split()
+CSRF_TRUSTED_ORIGINS = os.getenv('CSRF_TRUSTED_ORIGINS').split('')
 
 LOGGING = {
     'version': 1,
@@ -174,11 +174,9 @@ DJOSER = {
 
     },
     'SERIALIZERS': {
-        'user_create' : 'api.serializers.SignupSerializer',
-        'user' : 'api.serializers.CustomUserSerializer',
-        'current_user' : 'api.serializers.CustomUserSerializer',
+        'user_create': 'api.serializers.SignupSerializer',
+        'user': 'api.serializers.CustomUserSerializer',
+        'current_user': 'api.serializers.CustomUserSerializer',
     }
 
 }
-
-

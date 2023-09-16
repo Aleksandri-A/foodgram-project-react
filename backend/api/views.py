@@ -1,29 +1,23 @@
-from django.shortcuts import get_object_or_404
-from rest_framework import status, viewsets, permissions
-from rest_framework.decorators import action
-from rest_framework.response import Response
 from django_filters.rest_framework import DjangoFilterBackend
 from djoser.views import UserViewSet
+from recipes.models import (FavoriteRecipe, Ingredient, IngredientInRecipe,
+                            Recipe, ShoppingCart, Tag)
+from rest_framework import filters, permissions, status, viewsets
+from rest_framework.decorators import action
 from rest_framework.pagination import PageNumberPagination
+from rest_framework.response import Response
+from users.models import Subscribe, User
+
 from django.db.models import Sum
 from django.http import HttpResponse
-from rest_framework import filters
-
-
-from recipes.models import (Recipe, Tag, Ingredient,
-                            FavoriteRecipe, ShoppingCart,
-                            IngredientInRecipe)
-
-from users.models import User, Subscribe
-
-from .serializers import (IngredientSerializer,
-                          TagSerializer, CustomUserSerializer,
-                          RecipeWriteSerializer, RecipeReadSerializer,
-                          SubscriptionSerializer, RecipeShortSerializer
-                          )
-from .permissions import IsAuthorOrAdminOrReadOnly
+from django.shortcuts import get_object_or_404
 
 from .filters import IngredientFilter, RecipeFilter
+from .permissions import IsAuthorOrAdminOrReadOnly
+from .serializers import (CustomUserSerializer, IngredientSerializer,
+                          RecipeReadSerializer, RecipeShortSerializer,
+                          RecipeWriteSerializer, SubscriptionSerializer,
+                          TagSerializer)
 
 
 class CustomUserViewSet(UserViewSet):

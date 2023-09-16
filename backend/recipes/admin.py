@@ -1,10 +1,9 @@
+from import_export.admin import ImportExportMixin
+from users.models import Subscribe, User
+
 from django.contrib import admin
 
-from import_export.admin import ImportExportMixin
-
-from .models import Recipe, Tag, Ingredient, FavoriteRecipe, ShoppingCart
-
-from users.models import User, Subscribe
+from .models import FavoriteRecipe, Ingredient, Recipe, ShoppingCart, Tag
 
 
 class IngredientInRecipeInline(admin.TabularInline):
