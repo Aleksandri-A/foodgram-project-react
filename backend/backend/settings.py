@@ -18,6 +18,8 @@ DEBUG = False
 
 ALLOWED_HOSTS = os.getenv('ALLOWED_HOSTS', '127.0.0.1 localhost').split(' ')
 
+CSRF_TRUSTED_ORIGINS = os.getenv('CSRF_TRUSTED_ORIGINS').split()
+
 LOGGING = {
     'version': 1,
     'disable_existing_loggers': False,
@@ -163,7 +165,7 @@ REST_FRAMEWORK = {
 AUTH_USER_MODEL = 'users.User'
 
 
-DJOSER = { 
+DJOSER = {
     'LOGIN_FIELD': 'email',
     'HIDE_USERS': False,
     'PERMISSIONS': {
@@ -172,10 +174,11 @@ DJOSER = {
 
     },
     'SERIALIZERS': {
-        'user_create':'api.serializers.SignupSerializer',
-        'user':'api.serializers.CustomUserSerializer',
-        'current_user':'api.serializers.CustomUserSerializer',
+        'user_create' : 'api.serializers.SignupSerializer',
+        'user' : 'api.serializers.CustomUserSerializer',
+        'current_user' : 'api.serializers.CustomUserSerializer',
     }
 
 }
+
 
