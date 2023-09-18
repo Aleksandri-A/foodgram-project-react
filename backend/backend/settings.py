@@ -12,6 +12,8 @@ SECRET_KEY = os.getenv('SECRET_KEY', 'secret')
 
 DEBUG = False
 
+FORCE_SCRIPT_NAME = 'https://foodgram.ddnsking.com'
+
 ALLOWED_HOSTS = os.getenv('ALLOWED_HOSTS', '84.201.138.150 127.0.0.1 localhost foodgram.ddnsking.com').split()
 
 CSRF_TRUSTED_ORIGINS = os.getenv('CSRF_TRUSTED_ORIGINS', 'https://foodgram.ddnsking.com').split()
