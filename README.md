@@ -103,3 +103,7 @@ sudo nginx -t
 ```
 sudo service nginx reload 
 ```
+
+# Тестовые данные:
+https://foodgram.ddnsking.com
+admin@admin.ru пароль admin
