@@ -30,7 +30,7 @@ class CustomUserViewSet(UserViewSet):
         detail=True,
         methods=['post', 'delete'],
         url_path='subscribe',
-        permission_classes=[permissions.IsAuthenticated,]
+        permission_classes=[permissions.IsAuthenticated, ]
     )
     def subscribe(self, request, id):
         subscribing = get_object_or_404(User, pk=id)
@@ -64,7 +64,7 @@ class CustomUserViewSet(UserViewSet):
         detail=False,
         methods=['get'],
         url_path='subscriptions',
-        permission_classes=[permissions.IsAuthenticated,]
+        permission_classes=[permissions.IsAuthenticated, ]
     )
     def subscriptions(self, request):
         queryset = User.objects.filter(subscribing__subscriber=request.user)
@@ -119,7 +119,7 @@ class RecipeViewSet(viewsets.ModelViewSet):
         detail=True,
         methods=['post', 'delete'],
         url_path='favorite',
-        permission_classes=[permissions.IsAuthenticated,]
+        permission_classes=[permissions.IsAuthenticated, ]
     )
     def favorite(self, request, pk):
         recipe = get_object_or_404(Recipe, id=pk)
