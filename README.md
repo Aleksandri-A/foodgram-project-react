@@ -32,3 +32,74 @@ sudo apt-get install docker-compose-plugin
 ```
 docker compose up 
 ```
+
+## Деплой: публикация проекта в Docker на сервере
+
+Поочерёдно выполните на сервере команды для установки Docker и Docker Compose для Linux.
+
+```
+sudo apt update
+sudo apt install curl
+curl -fSL https://get.docker.com -o get-docker.sh
+sudo sh ./get-docker.sh
+sudo apt-get install docker-compose-plugin 
+```
+
+Создайте на сервере директорию kittygram и файл docker-compose.production.yml и скопируйте в него сожержимое из локального docker-compose.production.yml.
+
+Создайте файл .env и внесите ваши данные:
+```
+POSTGRES_DB=kittygram
+POSTGRES_USER=kittygram_user
+POSTGRES_PASSWORD=kittygram_password
+DB_PORT=5432
+DB_HOST=db
+```
+Для запуска Docker Compose в режиме демона команду выполните эту команду на сервере в папке kittygram/:
+```
+sudo docker compose -f docker-compose.production.yml up -d 
+```
+
+Выполните миграции, соберите статические файлы бэкенда и скопируйте их в /backend_static/static/:
+```
+sudo docker compose -f docker-compose.production.yml exec backend python manage.py migrate
+sudo docker compose -f docker-compose.production.yml exec backend python manage.py collectstatic
+sudo docker compose -f docker-compose.production.yml exec backend cp -r /app/collected_static/admin/. /app/static/admin/
+sudo docker compose -f docker-compose.production.yml exec backend cp -r /app/collected_static/rest_framework/. /app/static/rest_framework/
+```
+
+Если Nginx ещё не установлен на удалённый сервер, установите его:
+```
+sudo apt install nginx -y
+```
+
+Запустите Nginx командой:
+```
+sudo systemctl start nginx
+```
+
+На сервере в редакторе nano откройте конфиг Nginx и обновите настройки: 
+```
+nano /etc/nginx/sites-enabled/default
+```
+
+```
+server {
+    listen 80;
+    server_name ваш_домен;
+
+    location / {
+        proxy_pass http://127.0.0.1:8000;
+    }
+}
+```
+
+Чтобы убедиться, что в конфиге нет ошибок — выполните команду проверки конфигурации:
+```
+sudo nginx -t 
+```
+
+Перезагрузите конфиг Nginx:
+```
+sudo service nginx reload 
+```
