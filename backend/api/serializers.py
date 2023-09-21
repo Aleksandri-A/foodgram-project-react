@@ -1,14 +1,13 @@
 import base64
 from djoser.serializers import UserCreateSerializer, UserSerializer
+from recipes.models import (FavoriteRecipe, Ingredient, IngredientInRecipe,
+                            Recipe, ShoppingCart, Tag)
 from rest_framework import serializers
 from users.models import Subscribe, User
 
+from django.contrib.auth.password_validation import validate_password
 from django.core.files.base import ContentFile
 from django.shortcuts import get_object_or_404
-from django.contrib.auth.password_validation import validate_password
-
-from recipes.models import (FavoriteRecipe, Ingredient, IngredientInRecipe,
-                            Recipe, ShoppingCart, Tag)
 
 
 class SignupSerializer(UserCreateSerializer):
@@ -59,7 +58,7 @@ class SignupSerializer(UserCreateSerializer):
             raise serializers.ValidationError(
                 'Пользователь с таким email уже существует.'
             )
-        
+
         validate_password(data.get('password'))
 
         return data
@@ -230,14 +229,24 @@ class RecipeWriteSerializer(serializers.ModelSerializer):
         model = Recipe
 
     def validate(self, data):
-        for field in ('ingredients', 'tags', 'image', 'name', 'text', 'cooking_time'):
+        for field in (
+            'ingredients',
+            'tags',
+            'image',
+            'name',
+            'text',
+            'cooking_time'
+        ):
             if not self.initial_data.get(field):
                 raise serializers.ValidationError(
                     f'Не заполнено поле "{field}"!')
         ingredients = self.initial_data['ingredients']
         ingredients_list = []
         for current_ingredient in ingredients:
-            ingredient = get_object_or_404(Ingredient, id=current_ingredient['id'])
+            ingredient = get_object_or_404(
+                Ingredient,
+                id=current_ingredient['id']
+            )
             if ingredient in ingredients_list:
                 raise serializers.ValidationError(
                     'Ингридиенты не могут повторяться!'
