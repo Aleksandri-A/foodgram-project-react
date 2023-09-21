@@ -11,25 +11,7 @@ class User(AbstractUser):
         max_length=254,
         verbose_name='Адрес электронной почты'
     )
-    username = models.CharField(
-        max_length=150,
-        unique=True,
-        verbose_name='Уникальный юзернейм',
-        validators=[
-            RegexValidator(
-                regex=r'^[\w.@+-]+\Z',
-                message='Уникальный юзернейм содержит недопустимый символ'
-            )
-        ]
-    )
-    first_name = models.CharField(
-        max_length=150,
-        verbose_name='Имя пользователя'
-    )
-    last_name = models.CharField(
-        max_length=150,
-        verbose_name='Фамилия пользователя'
-    )
+
     password = models.CharField(
         max_length=150,
         verbose_name='Пароль'

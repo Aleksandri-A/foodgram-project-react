@@ -15,18 +15,18 @@ class Tag(models.Model):
     colour = models.CharField(
         max_length=7,
         verbose_name='Цвет в HEX',
-        unique=True
+        unique=True,
+        validators=[
+            RegexValidator(
+                regex='^#([A-Fa-f0-9]{6}|[A-Fa-f0-9]{3})$',
+                message='Введите цвет в HEX-формате!'
+            ),
+        ],
     )
     slug = models.SlugField(
         max_length=200,
         unique=True,
         verbose_name='Уникальный тег',
-        validators=[
-            RegexValidator(
-                regex=r'^[-a-zA-Z0-9_]+$',
-                message='Уникальный тег содержит недопустимый символ'
-            )
-        ]
     )
 
     class Meta:
@@ -112,7 +112,7 @@ class Recipe(models.Model):
         ordering = ['-pub_date']
 
     def __str__(self):
-        return self.name[:5]
+        return self.name[:16]
 
 
 class IngredientInRecipe(models.Model):

@@ -33,6 +33,15 @@ sudo apt-get install docker-compose-plugin
 docker compose up 
 ```
 
+Перейдите в директорию, где лежит файл docker-compose.yml, и выполните миграции:
+
+docker compose exec backend python manage.py migrate
+Выполните команду сборки статики. 
+
+```
+docker compose exec backend python manage.py collectstatic
+```
+
 ## Деплой: публикация проекта в Docker на сервере
 
 Поочерёдно выполните на сервере команды для установки Docker и Docker Compose для Linux.

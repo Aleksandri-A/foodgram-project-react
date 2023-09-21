@@ -1,7 +1,5 @@
 from django_filters.rest_framework import DjangoFilterBackend
 from djoser.views import UserViewSet
-from recipes.models import (FavoriteRecipe, Ingredient, IngredientInRecipe,
-                            Recipe, ShoppingCart, Tag)
 from rest_framework import filters, permissions, status, viewsets
 from rest_framework.decorators import action
 from rest_framework.pagination import PageNumberPagination
@@ -18,6 +16,8 @@ from .serializers import (CustomUserSerializer, IngredientSerializer,
                           RecipeReadSerializer, RecipeShortSerializer,
                           RecipeWriteSerializer, SubscriptionSerializer,
                           TagSerializer)
+from recipes.models import (FavoriteRecipe, Ingredient, IngredientInRecipe,
+                            Recipe, ShoppingCart, Tag)
 
 
 class CustomUserViewSet(UserViewSet):
@@ -53,12 +53,11 @@ class CustomUserViewSet(UserViewSet):
                 context={'request': request},
             )
             return Response(serializer.data, status=status.HTTP_201_CREATED)
-        if request.method == 'DELETE':
-            subscription = get_object_or_404(Subscribe,
-                                             subscriber=request.user,
-                                             subscribing=subscribing)
-            subscription.delete()
-            return Response(status=status.HTTP_204_NO_CONTENT)
+        subscription = get_object_or_404(Subscribe,
+                                         subscriber=request.user,
+                                         subscribing=subscribing)
+        subscription.delete()
+        return Response(status=status.HTTP_204_NO_CONTENT)
 
     @action(
         detail=False,
@@ -135,12 +134,11 @@ class RecipeViewSet(viewsets.ModelViewSet):
             FavoriteRecipe.objects.create(user=request.user, recipe=recipe)
             serializer = RecipeShortSerializer(recipe)
             return Response(serializer.data, status=status.HTTP_201_CREATED)
-        if request.method == 'DELETE':
-            favorite = get_object_or_404(FavoriteRecipe,
-                                         user=request.user,
-                                         recipe=recipe)
-            favorite.delete()
-            return Response(status=status.HTTP_204_NO_CONTENT)
+        favorite = get_object_or_404(FavoriteRecipe,
+                                     user=request.user,
+                                     recipe=recipe)
+        favorite.delete()
+        return Response(status=status.HTTP_204_NO_CONTENT)
 
     @action(
         detail=True,
@@ -162,12 +160,11 @@ class RecipeViewSet(viewsets.ModelViewSet):
             ShoppingCart.objects.create(user=request.user, recipe=recipe)
             serializer = RecipeShortSerializer(recipe)
             return Response(serializer.data, status=status.HTTP_201_CREATED)
-        if request.method == 'DELETE':
-            favorite = get_object_or_404(ShoppingCart,
-                                         user=request.user,
-                                         recipe=recipe)
-            favorite.delete()
-            return Response(status=status.HTTP_204_NO_CONTENT)
+        favorite = get_object_or_404(ShoppingCart,
+                                     user=request.user,
+                                     recipe=recipe)
+        favorite.delete()
+        return Response(status=status.HTTP_204_NO_CONTENT)
 
     @action(
         detail=False,

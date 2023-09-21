@@ -1,5 +1,4 @@
 from import_export.admin import ImportExportMixin
-from users.models import Subscribe, User
 
 from django.contrib import admin
 
@@ -25,18 +24,6 @@ class IngredientAdmin(ImportExportMixin, admin.ModelAdmin):
     list_filter = ('name',)
 
 
-class UserAdmin(admin.ModelAdmin):
-    list_display = (
-        'id',
-        'username',
-        'email',
-        'first_name',
-        'last_name',
-        'password'
-    )
-    list_filter = ('username', 'email')
-
-
 class FavoriteRecipeAdmin(admin.ModelAdmin):
     list_display = ('id', 'recipe', 'user')
 
@@ -44,7 +31,5 @@ class FavoriteRecipeAdmin(admin.ModelAdmin):
 admin.site.register(Recipe, RecipeAdmin)
 admin.site.register(Ingredient, IngredientAdmin)
 admin.site.register(Tag)
-admin.site.register(User, UserAdmin)
 admin.site.register(FavoriteRecipe, FavoriteRecipeAdmin)
 admin.site.register(ShoppingCart, FavoriteRecipeAdmin)
-admin.site.register(Subscribe)
