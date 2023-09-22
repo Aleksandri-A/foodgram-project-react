@@ -1,5 +1,7 @@
 from django.core.validators import MinValueValidator, RegexValidator
 from django.db import models
+from django.db.models import UniqueConstraint
+from django.db.models.functions import Lower
 
 from users.models import User
 
@@ -21,6 +23,7 @@ class Tag(models.Model):
                 regex='^#([A-Fa-f0-9]{6}|[A-Fa-f0-9]{3})$',
                 message='Введите цвет в HEX-формате!'
             ),
+
         ],
     )
     slug = models.SlugField(
@@ -32,6 +35,12 @@ class Tag(models.Model):
     class Meta:
         verbose_name = 'Тег'
         verbose_name_plural = 'Теги'
+        constraints = [
+            UniqueConstraint(
+                Lower('color'),
+                name='color_unique',
+            ),
+        ]
 
     def __str__(self):
         return self.slug
