@@ -1,12 +1,9 @@
 from django_filters.rest_framework import DjangoFilterBackend
 from djoser.views import UserViewSet
-from recipes.models import (FavoriteRecipe, Ingredient, IngredientInRecipe,
-                            Recipe, ShoppingCart, Tag)
 from rest_framework import filters, permissions, status, viewsets
 from rest_framework.decorators import action
 from rest_framework.pagination import PageNumberPagination
 from rest_framework.response import Response
-from users.models import Subscribe, User
 
 from django.db.models import Sum
 from django.http import HttpResponse
@@ -18,6 +15,9 @@ from .serializers import (CustomUserSerializer, IngredientSerializer,
                           RecipeReadSerializer, RecipeShortSerializer,
                           RecipeWriteSerializer, SubscriptionSerializer,
                           TagSerializer)
+from recipes.models import (FavoriteRecipe, Ingredient, IngredientInRecipe,
+                            Recipe, ShoppingCart, Tag)
+from users.models import Subscribe, User
 
 
 class CustomUserViewSet(UserViewSet):

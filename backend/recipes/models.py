@@ -1,7 +1,7 @@
-from users.models import User
-
 from django.core.validators import MinValueValidator, RegexValidator
 from django.db import models
+
+from users.models import User
 
 
 class Tag(models.Model):
@@ -12,7 +12,7 @@ class Tag(models.Model):
         verbose_name='Название тега',
         unique=True
     )
-    colour = models.CharField(
+    color = models.CharField(
         max_length=7,
         verbose_name='Цвет в HEX',
         unique=True,

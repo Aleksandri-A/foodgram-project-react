@@ -1,13 +1,13 @@
 import base64
 from djoser.serializers import UserCreateSerializer, UserSerializer
-from recipes.models import (FavoriteRecipe, Ingredient, IngredientInRecipe,
-                            Recipe, ShoppingCart, Tag)
 from rest_framework import serializers
-from users.models import Subscribe, User
 
 from django.contrib.auth.password_validation import validate_password
 from django.core.files.base import ContentFile
-from django.shortcuts import get_object_or_404
+
+from recipes.models import (FavoriteRecipe, Ingredient, IngredientInRecipe,
+                            Recipe, ShoppingCart, Tag)
+from users.models import Subscribe, User
 
 
 class SignupSerializer(UserCreateSerializer):
@@ -156,7 +156,7 @@ class TagSerializer(serializers.ModelSerializer):
         fields = (
             'id',
             'name',
-            'colour',
+            'color',
             'slug')
         model = Tag
 
@@ -243,10 +243,14 @@ class RecipeWriteSerializer(serializers.ModelSerializer):
         ingredients = self.initial_data['ingredients']
         ingredients_list = []
         for current_ingredient in ingredients:
-            ingredient = get_object_or_404(
-                Ingredient,
-                id=current_ingredient['id']
-            )
+            try:
+                ingredient = Ingredient.objects.get(
+                    id=current_ingredient['id']
+                )
+            except Ingredient.DoesNotExist:
+                raise serializers.ValidationError(
+                    'Такой ингридиент не существует!'
+                )
             if ingredient in ingredients_list:
                 raise serializers.ValidationError(
                     'Ингридиенты не могут повторяться!'
