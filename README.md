@@ -54,7 +54,7 @@ sudo sh ./get-docker.sh
 sudo apt-get install docker-compose-plugin 
 ```
 
-Создайте на сервере директорию kittygram и файл docker-compose.production.yml и скопируйте в него сожержимое из локального docker-compose.production.yml.
+Создайте на сервере директорию foodgram и файл docker-compose.production.yml и скопируйте в него сожержимое из локального docker-compose.production.yml.
 
 Создайте файл .env и внесите ваши данные:
 ```
@@ -64,7 +64,7 @@ POSTGRES_PASSWORD=foodgram_password
 DB_PORT=5432
 DB_HOST=db
 ```
-Для запуска Docker Compose в режиме демона команду выполните эту команду на сервере в папке kittygram/:
+Для запуска Docker Compose в режиме демона команду выполните эту команду на сервере в папке foodgram/:
 ```
 sudo docker compose -f docker-compose.production.yml up -d 
 ```
