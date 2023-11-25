@@ -7,6 +7,7 @@
 
 Python, Django, PostgreSQL, Django Rest Framework, Djoser, CI/CD, Nginx
 
+
 ## Настройка приложения
 
 Клонировать репозиторий и перейти в него в командной строке:
